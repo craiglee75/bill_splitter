@@ -1,0 +1,55 @@
+#  bill_splitter
+import math, random
+
+def main():
+    global num_guests, friends
+    num_guests = input('Enter the number of friends joining (including you):\n')
+    if num_guests.isalpha() or int(num_guests) <= 0:
+        print()
+        print('No one is joining for the party')
+        print()
+    elif int(num_guests) > 0:
+        num_guests = int(num_guests)
+        print()
+        print('Enter the name of every friend (including you), each on a new line:')
+        friends = {} 
+        for guest in range(num_guests):
+            guest = input()
+            friends[guest] = 0
+        print()
+        bill_amt()
+        lucky_person()
+
+def bill_amt():
+    global bill, bill_share, bill_total
+    if num_guests != 0:
+        try:
+            bill_total = float(input('Enter the total bill value:\n'))
+            bill_share = math.ceil((bill_total / num_guests) * 100) / 100
+            # bill_share = round(bill_total / num_guests, 2)
+            bill = dict.fromkeys(friends, bill_share)
+            # print()
+            # print(bill)
+        except: ValueError, 'Please input a number!'
+
+def lucky_person():
+    global bill
+    print()
+    lucky_on = input('Do you want to use the "Who is lucky?" feature? Write Yes/No:\n')
+    if lucky_on == "Yes" or lucky_on == "yes" or lucky_on == "y":
+        lucky_friend = random.choice(list(friends))
+        bill_share = round(bill_total / (num_guests - 1), 2)
+        bill = dict.fromkeys(friends, bill_share)
+        bill[lucky_friend] = 0
+        print()
+        print(f'{lucky_friend} is the lucky one!')
+        print()
+        print(bill)
+    else:
+        print()
+        print('No one is going to be lucky')
+        print()
+        print(bill)
+
+
+main()
